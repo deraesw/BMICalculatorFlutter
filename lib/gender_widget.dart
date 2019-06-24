@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+const textSize = 18.0;
+const iconSize = 72.0;
+const separator = 16.0;
+
 class GenderWidget extends StatelessWidget {
 
   final String text;
@@ -18,16 +22,16 @@ class GenderWidget extends StatelessWidget {
       children: <Widget>[
         Icon(
           this.icon,
-          size: 72.0,
+          size: iconSize,
         ),
         SizedBox(
-          height: 16.0,
+          height: separator,
         ),
         Text(
           this.text,
-          style: TextStyle(
-            fontSize: 18.0,
-            color: Color(0xFF8D8E98),
+          style: const TextStyle(
+            fontSize: textSize,
+            color: const Color(0xFF8D8E98),
           ),
         )
       ],
