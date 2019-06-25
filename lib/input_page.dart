@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'card_container_widget.dart';
 import 'gender_widget.dart';
 import 'constants.dart';
+import 'round_icon_button.dart';
 
 enum Gender { male, female }
 
@@ -14,17 +15,19 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  Gender selectedGender = Gender.male;
-  int height = 180;
+  Gender _selectedGender = Gender.male;
+  int _height = 180;
+  int _weight = 80;
+  int _age = 30;
 
   void _genderSelection(Gender gender) {
     setState(() {
-      selectedGender = gender;
+      _selectedGender = gender;
     });
   }
 
   Color _getBackgroundColor(Gender defineGender) {
-    return selectedGender == defineGender
+    return _selectedGender == defineGender
         ? containerBackgroundColor
         : inactiveContainerBackgroundColor;
   }
@@ -86,11 +89,67 @@ class _InputPageState extends State<InputPage> {
                 Expanded(
                   child: CardContainerWidget(
                     color: containerBackgroundColor,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "WEIGHT",
+                          style: labelTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          textBaseline: TextBaseline.alphabetic,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          children: <Widget>[
+                            Text(
+                              _weight.toString(),
+                              style: labelBigTextStyle,
+                            ),
+                            SizedBox(
+                              width: 8.0,
+                            ),
+                            Text(
+                              "kg",
+                              style: labelTextStyle,
+                            )
+                          ],
+                        ),
+                       buildButtonRow(_reduceWeight, _increaseWeight),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
                   child: CardContainerWidget(
                     color: containerBackgroundColor,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "AGE",
+                          style: labelTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          textBaseline: TextBaseline.alphabetic,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          children: <Widget>[
+                            Text(
+                              _age.toString(),
+                              style: labelBigTextStyle,
+                            ),
+                            SizedBox(
+                              width: 8.0,
+                            ),
+                            Text(
+                              "year",
+                              style: labelTextStyle,
+                            )
+                          ],
+                        ),
+                        buildButtonRow(_reduceAge, _increaseAge)
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -107,6 +166,63 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
+  void _reduceWeight() {
+    setState(() {
+      if (_weight > 30) {
+        _weight--;
+      }
+    });
+  }
+
+  void _increaseWeight() {
+    setState(() {
+      if (_weight < 300) {
+        _weight++;
+      }
+    });
+  }
+
+  void _reduceAge() {
+    setState(() {
+      if (_age > 10) {
+        _age--;
+      }
+    });
+  }
+
+  void _increaseAge() {
+    setState(() {
+      if (_age < 110) {
+        _age++;
+      }
+    });
+  }
+
+  Widget buildButtonRow(Function minusAction, Function addAction) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        RoundIconButton(
+          onPressed: minusAction,
+          child: Icon(
+            Icons.remove,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(
+          width: 8.0,
+        ),
+        RoundIconButton(
+          onPressed: addAction,
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget buildHeightLabel() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -114,7 +230,7 @@ class _InputPageState extends State<InputPage> {
       textBaseline: TextBaseline.alphabetic,
       children: <Widget>[
         Text(
-          height.toString(),
+          _height.toString(),
           style: labelBigTextStyle,
         ),
         SizedBox(
@@ -131,20 +247,19 @@ class _InputPageState extends State<InputPage> {
   Widget buildSlider() {
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
-        activeTrackColor: Colors.white,
-        thumbColor: accentColor,
-        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 15.0),
-        overlayShape: RoundSliderOverlayShape(overlayRadius: 25.0),
-        overlayColor: Color(0x29EB1555)
-      ),
+          activeTrackColor: Colors.white,
+          thumbColor: accentColor,
+          thumbShape: RoundSliderThumbShape(enabledThumbRadius: 15.0),
+          overlayShape: RoundSliderOverlayShape(overlayRadius: 25.0),
+          overlayColor: Color(0x29EB1555)),
       child: Slider(
         onChanged: (double value) {
           setState(() {
-            height = value.toInt();
+            _height = value.toInt();
           });
         },
         inactiveColor: Color(0xFF8D8E98),
-        value: height.toDouble(),
+        value: _height.toDouble(),
         min: 120.0,
         max: 220.0,
       ),

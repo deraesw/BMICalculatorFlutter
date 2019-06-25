@@ -18,7 +18,7 @@ class CardContainerWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.all(16.0),
+        margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           color: this.color,
           borderRadius: BorderRadius.circular(
