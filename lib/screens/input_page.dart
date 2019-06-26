@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:bmi_calculator/components/input_page_import.dart';
+import 'package:bmi_calculator/constants.dart';
+import 'package:bmi_calculator/calculator_bussiness.dart';
 
-import 'card_container_widget.dart';
-import 'gender_widget.dart';
-import 'constants.dart';
-import 'round_icon_button.dart';
+import 'result_page.dart';
 
 enum Gender { male, female }
 
@@ -19,18 +19,6 @@ class _InputPageState extends State<InputPage> {
   int _height = 180;
   int _weight = 80;
   int _age = 30;
-
-  void _genderSelection(Gender gender) {
-    setState(() {
-      _selectedGender = gender;
-    });
-  }
-
-  Color _getBackgroundColor(Gender defineGender) {
-    return _selectedGender == defineGender
-        ? containerBackgroundColor
-        : inactiveContainerBackgroundColor;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +102,7 @@ class _InputPageState extends State<InputPage> {
                             )
                           ],
                         ),
-                       buildButtonRow(_reduceWeight, _increaseWeight),
+                        buildButtonRow(_reduceWeight, _increaseWeight),
                       ],
                     ),
                   ),
@@ -155,47 +143,21 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(top: 8.0),
-            height: actionButtonHeight,
-            width: double.infinity,
-            color: accentColor,
+          BottomButtonWidget(
+            title: 'CALCULATE',
+            onTap: () {
+              CalculatorBusiness cal = CalculatorBusiness(height: this._height, weight: this._weight);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ResultPage(
+                    bmi: cal.calculateBMI(),
+                    bmiResult: cal.getResult(),
+                    interpretation: cal.getInterpretation(),
+                  )));
+            },
           )
         ],
       ),
     );
-  }
-
-  void _reduceWeight() {
-    setState(() {
-      if (_weight > 30) {
-        _weight--;
-      }
-    });
-  }
-
-  void _increaseWeight() {
-    setState(() {
-      if (_weight < 300) {
-        _weight++;
-      }
-    });
-  }
-
-  void _reduceAge() {
-    setState(() {
-      if (_age > 10) {
-        _age--;
-      }
-    });
-  }
-
-  void _increaseAge() {
-    setState(() {
-      if (_age < 110) {
-        _age++;
-      }
-    });
   }
 
   Widget buildButtonRow(Function minusAction, Function addAction) {
@@ -264,5 +226,49 @@ class _InputPageState extends State<InputPage> {
         max: 220.0,
       ),
     );
+  }
+
+  Color _getBackgroundColor(Gender defineGender) {
+    return _selectedGender == defineGender
+        ? containerBackgroundColor
+        : inactiveContainerBackgroundColor;
+  }
+
+  void _genderSelection(Gender gender) {
+    setState(() {
+      _selectedGender = gender;
+    });
+  }
+
+  void _reduceWeight() {
+    setState(() {
+      if (_weight > 30) {
+        _weight--;
+      }
+    });
+  }
+
+  void _increaseWeight() {
+    setState(() {
+      if (_weight < 300) {
+        _weight++;
+      }
+    });
+  }
+
+  void _reduceAge() {
+    setState(() {
+      if (_age > 10) {
+        _age--;
+      }
+    });
+  }
+
+  void _increaseAge() {
+    setState(() {
+      if (_age < 110) {
+        _age++;
+      }
+    });
   }
 }
